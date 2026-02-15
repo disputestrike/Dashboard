@@ -7,14 +7,16 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Dashboard from "./pages/Dashboard";
 import GanttView from "./pages/GanttView";
 import InstitutionDetail from "./pages/InstitutionDetail";
-
+import AdminPanel from "./pages/AdminPanel";
 
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path="/" component={Dashboard} />
       <Route path="/gantt" component={GanttView} />
       <Route path="/institution" component={InstitutionDetail} />
+      <Route path="/admin" component={AdminPanel} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

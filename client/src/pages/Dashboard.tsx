@@ -4,15 +4,19 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Clock, Calendar, Zap } from 'lucide-react';
+import { TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Clock, Calendar, Zap, Download, Settings } from 'lucide-react';
 import { useLocation } from 'wouter';
 import { institutions, variables, generatePerformanceData, ganttTasks, calculateHealthSummary } from '@/lib/mockData';
+import { useAuth } from '@/_core/hooks/useAuth';
+import { trpc } from '@/lib/trpc';
 
 export default function Dashboard() {
   const [location, setLocation] = useLocation();
+  const { user } = useAuth();
   const [selectedInstitution, setSelectedInstitution] = useState<string>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedMonth, setSelectedMonth] = useState<string>('December');
+  const exportMutation = trpc.export.toExcel.useMutation();
 
   const performanceData = useMemo(() => generatePerformanceData(), []);
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -170,7 +174,25 @@ export default function Dashboard() {
               <Calendar className="w-4 h-4" />
               View Gantt
             </Button>
-            <Button variant="outline">Export Report</Button>
+            <Button 
+              variant="outline" 
+              onClick={() => exportMutation.mutate({ institutionId: selectedInstitution, month: selectedMonth })}
+              disabled={exportMutation.isPending}
+              className="flex items-center gap-2"
+            >
+              <Download className="w-4 h-4" />
+              {exportMutation.isPending ? 'Exporting...' : 'Export Excel'}
+            </Button>
+            {user?.role === 'admin' && (
+              <Button 
+                variant="outline" 
+                onClick={() => setLocation('/admin')}
+                className="flex items-center gap-2"
+              >
+                <Settings className="w-4 h-4" />
+                Admin
+              </Button>
+            )}
           </div>
         </div>
       </div>
