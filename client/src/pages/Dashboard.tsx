@@ -9,6 +9,7 @@ import { useLocation } from 'wouter';
 import { institutions, variables, generatePerformanceData, ganttTasks, calculateHealthSummary } from '@/lib/mockData';
 import { useAuth } from '@/_core/hooks/useAuth';
 import { trpc } from '@/lib/trpc';
+import { useEffect } from 'react';
 
 export default function Dashboard() {
   const [location, setLocation] = useLocation();
@@ -20,6 +21,22 @@ export default function Dashboard() {
 
   const performanceData = useMemo(() => generatePerformanceData(), []);
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  // Handle export file download
+  useEffect(() => {
+    if (exportMutation.data?.success && exportMutation.data?.buffer) {
+      const buffer = Buffer.from(exportMutation.data.buffer, 'base64');
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = exportMutation.data.fileName;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }
+  }, [exportMutation.data]);
 
   // Filter data based on selections
   const filteredData = useMemo(() => {
@@ -108,11 +125,15 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="text-right">
-              <div className="text-sm text-blue-100">System Status</div>
-              <div className="flex items-center gap-2 mt-1">
-                <CheckCircle2 className="w-5 h-5 text-[#F4B024]" />
-                <span className="font-medium text-white">All Systems Operational</span>
-              </div>
+              {user && (
+                <Button 
+                  variant="ghost"
+                  onClick={() => trpc.auth.logout.useMutation().mutate()}
+                  className="text-white hover:bg-white/20"
+                >
+                  Sign Out
+                </Button>
+              )}
             </div>
           </div>
         </div>
