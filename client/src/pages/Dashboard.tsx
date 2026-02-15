@@ -13,11 +13,12 @@ import { useEffect } from 'react';
 
 export default function Dashboard() {
   const [location, setLocation] = useLocation();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [selectedInstitution, setSelectedInstitution] = useState<string>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedMonth, setSelectedMonth] = useState<string>('December');
   const exportMutation = trpc.export.toExcel.useMutation();
+  const logoutMutation = trpc.auth.logout.useMutation();
 
   const performanceData = useMemo(() => generatePerformanceData(), []);
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -128,10 +129,18 @@ export default function Dashboard() {
               {user && (
                 <Button 
                   variant="ghost"
-                  onClick={() => trpc.auth.logout.useMutation().mutate()}
+                  onClick={() => {
+                    logoutMutation.mutate(undefined, {
+                      onSuccess: () => {
+                        logout();
+                        setLocation('/');
+                      }
+                    });
+                  }}
+                  disabled={logoutMutation.isPending}
                   className="text-white hover:bg-white/20"
                 >
-                  Sign Out
+                  {logoutMutation.isPending ? 'Signing out...' : 'Sign Out'}
                 </Button>
               )}
             </div>
