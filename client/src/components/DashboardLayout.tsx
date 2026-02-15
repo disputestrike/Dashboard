@@ -159,22 +159,18 @@ function DashboardLayoutContent({
           className="border-r-0"
           disableTransition={isResizing}
         >
-          <SidebarHeader className="h-16 justify-center">
+          <SidebarHeader className="h-16 justify-center bg-gradient-to-r from-[#003D7A] to-[#0052A3]">
             <div className="flex items-center gap-3 px-2 transition-all w-full">
-              <button
-                onClick={toggleSidebar}
-                className="h-8 w-8 flex items-center justify-center hover:bg-accent rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring shrink-0"
-                aria-label="Toggle navigation"
-              >
-                <PanelLeft className="h-4 w-4 text-muted-foreground" />
-              </button>
               {!isCollapsed ? (
                 <div className="flex items-center gap-2 min-w-0">
-                  <span className="font-semibold tracking-tight truncate">
-                    Navigation
+                  <img src="/mcc-logo.svg" alt="MCC Logo" className="h-8 w-8" />
+                  <span className="font-bold tracking-tight truncate text-white">
+                    MCC Dashboard
                   </span>
                 </div>
-              ) : null}
+              ) : (
+                <img src="/mcc-logo.svg" alt="MCC Logo" className="h-8 w-8 mx-auto" />
+              )}
             </div>
           </SidebarHeader>
 
