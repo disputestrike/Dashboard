@@ -8,17 +8,29 @@ import Dashboard from "./pages/Dashboard";
 import GanttView from "./pages/GanttView";
 import InstitutionDetail from "./pages/InstitutionDetail";
 import AdminPanel from "./pages/AdminPanel";
+import Login from "./pages/Login";
+import { useAuth } from "./_core/hooks/useAuth";
 
 function Router() {
-  // make sure to consider if you need authentication for certain routes
+  const { user, loading } = useAuth();
+
+  if (!loading && !user) {
+    return (
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Route component={Login} />
+      </Switch>
+    );
+  }
+
   return (
     <Switch>
       <Route path="/" component={Dashboard} />
       <Route path="/gantt" component={GanttView} />
       <Route path="/institution" component={InstitutionDetail} />
       <Route path="/admin" component={AdminPanel} />
+      <Route path="/login" component={Login} />
       <Route path="/404" component={NotFound} />
-      {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
   );
