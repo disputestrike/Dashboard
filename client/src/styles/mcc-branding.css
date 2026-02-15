@@ -1,0 +1,336 @@
+/**
+ * MCC Kansas City Official Branding
+ * Color Palette and Styling
+ */
+
+:root {
+  /* MCC Primary Colors */
+  --mcc-blue-primary: #003D7A;
+  --mcc-blue-dark: #002B57;
+  --mcc-blue-light: #0052A3;
+  --mcc-gold: #F4B024;
+  --mcc-gold-dark: #D99A1B;
+  --mcc-gold-light: #FFC857;
+  
+  /* Neutral Colors */
+  --mcc-white: #FFFFFF;
+  --mcc-gray-light: #F5F5F5;
+  --mcc-gray-medium: #E0E0E0;
+  --mcc-gray-dark: #333333;
+  
+  /* Status Colors (with MCC blue/gold theme) */
+  --mcc-green: #2E7D32;
+  --mcc-yellow: #F57F17;
+  --mcc-red: #C62828;
+  
+  /* Semantic Colors */
+  --mcc-success: #2E7D32;
+  --mcc-warning: #F57F17;
+  --mcc-error: #C62828;
+  --mcc-info: #0052A3;
+}
+
+/* MCC Branding Overrides */
+body {
+  background-color: var(--mcc-white);
+  color: var(--mcc-gray-dark);
+}
+
+/* Header and Navigation */
+.mcc-header {
+  background: linear-gradient(135deg, var(--mcc-blue-primary) 0%, var(--mcc-blue-dark) 100%);
+  color: var(--mcc-white);
+  border-bottom: 4px solid var(--mcc-gold);
+}
+
+.mcc-nav-link {
+  color: var(--mcc-white);
+  transition: all 0.3s ease;
+}
+
+.mcc-nav-link:hover {
+  color: var(--mcc-gold);
+  background-color: rgba(244, 176, 36, 0.1);
+}
+
+.mcc-nav-link.active {
+  color: var(--mcc-gold);
+  border-bottom: 3px solid var(--mcc-gold);
+}
+
+/* Buttons */
+.mcc-btn-primary {
+  background-color: var(--mcc-blue-primary);
+  color: var(--mcc-white);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.mcc-btn-primary:hover {
+  background-color: var(--mcc-blue-light);
+  box-shadow: 0 4px 12px rgba(0, 61, 122, 0.3);
+}
+
+.mcc-btn-secondary {
+  background-color: var(--mcc-gold);
+  color: var(--mcc-blue-primary);
+  border: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.mcc-btn-secondary:hover {
+  background-color: var(--mcc-gold-dark);
+  box-shadow: 0 4px 12px rgba(244, 176, 36, 0.3);
+}
+
+.mcc-btn-outline {
+  border: 2px solid var(--mcc-blue-primary);
+  color: var(--mcc-blue-primary);
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.mcc-btn-outline:hover {
+  background-color: var(--mcc-blue-primary);
+  color: var(--mcc-white);
+}
+
+/* Cards and Containers */
+.mcc-card {
+  border: 1px solid var(--mcc-gray-medium);
+  border-radius: 8px;
+  background-color: var(--mcc-white);
+  box-shadow: 0 2px 8px rgba(0, 61, 122, 0.08);
+  transition: all 0.3s ease;
+}
+
+.mcc-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 61, 122, 0.12);
+}
+
+.mcc-card-header {
+  background: linear-gradient(135deg, var(--mcc-blue-primary) 0%, var(--mcc-blue-light) 100%);
+  color: var(--mcc-white);
+  padding: 16px;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 3px solid var(--mcc-gold);
+}
+
+/* Status Badges */
+.mcc-status-green {
+  background-color: rgba(46, 125, 50, 0.1);
+  color: var(--mcc-green);
+  border-left: 4px solid var(--mcc-green);
+}
+
+.mcc-status-yellow {
+  background-color: rgba(245, 127, 23, 0.1);
+  color: var(--mcc-yellow);
+  border-left: 4px solid var(--mcc-yellow);
+}
+
+.mcc-status-red {
+  background-color: rgba(198, 40, 40, 0.1);
+  color: var(--mcc-red);
+  border-left: 4px solid var(--mcc-red);
+}
+
+/* KPI Cards */
+.mcc-kpi-card {
+  background: linear-gradient(135deg, var(--mcc-blue-primary) 0%, var(--mcc-blue-light) 100%);
+  color: var(--mcc-white);
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 61, 122, 0.2);
+}
+
+.mcc-kpi-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--mcc-gold);
+}
+
+.mcc-kpi-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Sidebar */
+.mcc-sidebar {
+  background-color: var(--mcc-blue-primary);
+  color: var(--mcc-white);
+}
+
+.mcc-sidebar-item {
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  padding: 12px 16px;
+  border-left: 3px solid transparent;
+}
+
+.mcc-sidebar-item:hover {
+  background-color: rgba(244, 176, 36, 0.1);
+  color: var(--mcc-gold);
+  border-left-color: var(--mcc-gold);
+}
+
+.mcc-sidebar-item.active {
+  background-color: rgba(244, 176, 36, 0.15);
+  color: var(--mcc-gold);
+  border-left-color: var(--mcc-gold);
+  font-weight: 600;
+}
+
+/* Tables */
+.mcc-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.mcc-table thead {
+  background: linear-gradient(135deg, var(--mcc-blue-primary) 0%, var(--mcc-blue-light) 100%);
+  color: var(--mcc-white);
+}
+
+.mcc-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--mcc-gold);
+}
+
+.mcc-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--mcc-gray-medium);
+}
+
+.mcc-table tbody tr:hover {
+  background-color: var(--mcc-gray-light);
+}
+
+/* Tabs */
+.mcc-tabs {
+  border-bottom: 2px solid var(--mcc-gray-medium);
+}
+
+.mcc-tab {
+  color: var(--mcc-gray-dark);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  padding: 12px 16px;
+}
+
+.mcc-tab:hover {
+  color: var(--mcc-blue-primary);
+}
+
+.mcc-tab.active {
+  color: var(--mcc-blue-primary);
+  border-bottom-color: var(--mcc-gold);
+  font-weight: 600;
+}
+
+/* Alerts and Notifications */
+.mcc-alert-info {
+  background-color: rgba(0, 82, 163, 0.1);
+  border-left: 4px solid var(--mcc-info);
+  color: var(--mcc-info);
+}
+
+.mcc-alert-success {
+  background-color: rgba(46, 125, 50, 0.1);
+  border-left: 4px solid var(--mcc-success);
+  color: var(--mcc-success);
+}
+
+.mcc-alert-warning {
+  background-color: rgba(245, 127, 23, 0.1);
+  border-left: 4px solid var(--mcc-warning);
+  color: var(--mcc-warning);
+}
+
+.mcc-alert-error {
+  background-color: rgba(198, 40, 40, 0.1);
+  border-left: 4px solid var(--mcc-error);
+  color: var(--mcc-error);
+}
+
+/* Dividers and Accents */
+.mcc-divider {
+  background: linear-gradient(90deg, transparent, var(--mcc-gold), transparent);
+  height: 2px;
+  margin: 24px 0;
+}
+
+.mcc-accent-line {
+  border-top: 3px solid var(--mcc-gold);
+  padding-top: 16px;
+}
+
+/* Typography */
+.mcc-heading-primary {
+  color: var(--mcc-blue-primary);
+  font-weight: 700;
+}
+
+.mcc-heading-secondary {
+  color: var(--mcc-blue-light);
+  font-weight: 600;
+}
+
+.mcc-text-accent {
+  color: var(--mcc-gold);
+  font-weight: 600;
+}
+
+/* Forms */
+.mcc-input {
+  border: 1px solid var(--mcc-gray-medium);
+  border-radius: 4px;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+}
+
+.mcc-input:focus {
+  border-color: var(--mcc-blue-primary);
+  box-shadow: 0 0 0 3px rgba(0, 61, 122, 0.1);
+  outline: none;
+}
+
+.mcc-input:focus-visible {
+  border-color: var(--mcc-blue-primary);
+}
+
+/* Badges */
+.mcc-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.mcc-badge-primary {
+  background-color: var(--mcc-blue-primary);
+  color: var(--mcc-white);
+}
+
+.mcc-badge-secondary {
+  background-color: var(--mcc-gold);
+  color: var(--mcc-blue-primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mcc-kpi-value {
+    font-size: 1.75rem;
+  }
+  
+  .mcc-card-header {
+    padding: 12px;
+  }
+}
