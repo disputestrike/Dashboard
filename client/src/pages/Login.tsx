@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { getLoginUrl } from '@/const';
-import { Lock } from 'lucide-react';
+import { Lock, Building2 } from 'lucide-react';
 
 export default function Login() {
   const handleLogin = () => {
@@ -9,66 +9,83 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-mcc-blue-900 via-mcc-blue-800 to-mcc-blue-700 flex items-center justify-center p-4">
-      {/* Background accent */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-mcc-gold/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-mcc-gold/5 rounded-full blur-3xl"></div>
+    <div className="min-h-screen bg-white">
+      {/* MCC Header Bar */}
+      <div className="w-full bg-gradient-to-r from-[#003D7A] to-[#0052A3] border-b-4 border-[#F4B024]">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-4">
+          {/* MCC Logo */}
+          <div className="flex items-center justify-center w-16 h-16 bg-white rounded-full shadow-md">
+            <span className="text-2xl font-bold text-[#003D7A]">MCC</span>
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-white">Metropolitan Community College</h1>
+            <p className="text-[#F4B024] font-semibold">Kansas City</p>
+          </div>
+        </div>
       </div>
 
-      <div className="w-full max-w-md relative z-10">
-        {/* MCC Logo and Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full mb-4 shadow-lg">
-            <span className="text-4xl font-bold text-mcc-blue-900">MCC</span>
+      {/* Main Content */}
+      <div className="min-h-[calc(100vh-120px)] flex items-center justify-center p-4 bg-gray-50">
+        <div className="w-full max-w-md">
+          {/* Login Card */}
+          <Card className="shadow-2xl border-0 bg-white">
+            {/* Card Header with MCC Blue */}
+            <CardHeader className="bg-gradient-to-r from-[#003D7A] to-[#0052A3] text-white rounded-t-lg pb-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="bg-white/20 p-2 rounded-lg">
+                  <Lock className="w-6 h-6" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl">Institutional Performance</CardTitle>
+                  <CardDescription className="text-[#F4B024] text-sm font-semibold">
+                    Dashboard Access
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+
+            {/* Card Content */}
+            <CardContent className="pt-8 pb-8">
+              <div className="space-y-6">
+                {/* Welcome Section */}
+                <div className="bg-gradient-to-br from-[#003D7A]/5 to-[#F4B024]/5 border-l-4 border-[#F4B024] rounded-lg p-4">
+                  <h3 className="font-bold text-[#003D7A] mb-2 flex items-center gap-2">
+                    <Building2 className="w-5 h-5" />
+                    Welcome to MCC Dashboard
+                  </h3>
+                  <p className="text-sm text-gray-700 leading-relaxed">
+                    Access real-time institutional performance metrics, analytics, and reporting across all MCC campuses. Sign in with your authorized credentials to continue.
+                  </p>
+                </div>
+
+                {/* Sign In Button */}
+                <Button
+                  onClick={handleLogin}
+                  className="w-full bg-[#F4B024] hover:bg-[#E5A01F] text-[#003D7A] font-bold py-6 text-lg rounded-lg transition-all hover:shadow-lg active:scale-95"
+                >
+                  Sign In to Dashboard
+                </Button>
+
+                {/* Security Notice */}
+                <div className="border-t border-gray-200 pt-4">
+                  <p className="text-xs text-gray-600 text-center leading-relaxed">
+                    🔒 This is a secure system for authorized MCC staff only. <br />
+                    Unauthorized access attempts are monitored and logged.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Footer */}
+          <div className="text-center mt-8">
+            <p className="text-sm text-gray-600">
+              © 2026 Metropolitan Community College. All rights reserved.
+            </p>
+            <p className="text-xs text-gray-500 mt-2">
+              For support, contact your system administrator.
+            </p>
           </div>
-          <h1 className="text-4xl font-bold text-white mb-2">Metropolitan Community College</h1>
-          <p className="text-mcc-gold text-lg font-semibold">Kansas City</p>
-        </div>
-
-        {/* Login Card */}
-        <Card className="bg-white shadow-2xl border-0">
-          <CardHeader className="bg-gradient-to-r from-mcc-blue-900 to-mcc-blue-800 text-white rounded-t-lg">
-            <div className="flex items-center gap-2 mb-2">
-              <Lock className="w-5 h-5" />
-              <CardTitle>Institutional Performance Dashboard</CardTitle>
-            </div>
-            <CardDescription className="text-mcc-gold">
-              Secure access for authorized staff
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="pt-8">
-            <div className="space-y-6">
-              <div className="bg-mcc-blue-50 border border-mcc-blue-200 rounded-lg p-4">
-                <h3 className="font-semibold text-mcc-blue-900 mb-2">Welcome</h3>
-                <p className="text-sm text-mcc-blue-700">
-                  Sign in with your MCC credentials to access the institutional performance management system. 
-                  This dashboard provides real-time metrics, analytics, and reporting for all MCC institutions.
-                </p>
-              </div>
-
-              <Button
-                onClick={handleLogin}
-                className="w-full bg-mcc-gold hover:bg-mcc-gold-dark text-mcc-blue-900 font-bold py-6 text-lg rounded-lg transition-all hover:shadow-lg"
-              >
-                Sign In to Dashboard
-              </Button>
-
-              <div className="border-t border-gray-200 pt-4">
-                <p className="text-xs text-gray-600 text-center">
-                  This is a secure system. Unauthorized access is prohibited.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Footer */}
-        <div className="text-center mt-8 text-white/80">
-          <p className="text-sm">
-            © 2026 Metropolitan Community College. All rights reserved.
-          </p>
         </div>
       </div>
     </div>
