@@ -97,18 +97,21 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="border-b border-border bg-card shadow-sm">
+      <div className="bg-gradient-to-r from-[#003D7A] to-[#0052A3] border-b-4 border-[#F4B024]">
         <div className="container py-6">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">MCC Kansas City</h1>
-              <p className="text-muted-foreground mt-1">Institutional Performance Dashboard</p>
+            <div className="flex items-center gap-4">
+              <img src="/mcc-logo.svg" alt="MCC Logo" className="h-12 w-12" />
+              <div>
+                <h1 className="text-3xl font-bold text-white">MCC Kansas City</h1>
+                <p className="text-blue-100 mt-1">Institutional Performance Dashboard</p>
+              </div>
             </div>
             <div className="text-right">
-              <div className="text-sm text-muted-foreground">System Status</div>
+              <div className="text-sm text-blue-100">System Status</div>
               <div className="flex items-center gap-2 mt-1">
-                <CheckCircle2 className="w-5 h-5 text-green-600" />
-                <span className="font-medium text-foreground">All Systems Operational</span>
+                <CheckCircle2 className="w-5 h-5 text-[#F4B024]" />
+                <span className="font-medium text-white">All Systems Operational</span>
               </div>
             </div>
           </div>
@@ -201,52 +204,52 @@ export default function Dashboard() {
       <div className="container py-8">
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card className="kpi-card">
+          <Card className="kpi-card border-l-4 border-l-green-600 bg-gradient-to-br from-green-50 to-white">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Healthy Status</CardTitle>
+              <CardTitle className="text-sm font-medium text-[#003D7A]">Healthy Status</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl font-bold text-green-600">{health.healthPercentage}%</span>
                 <TrendingUp className="w-4 h-4 text-green-600" />
               </div>
-              <p className="text-xs text-muted-foreground mt-2">{health.green} of {health.total} metrics</p>
+              <p className="text-xs text-[#003D7A] mt-2">{health.green} of {health.total} metrics</p>
             </CardContent>
           </Card>
 
-          <Card className="kpi-card">
+          <Card className="kpi-card border-l-4 border-l-green-600 bg-gradient-to-br from-green-50 to-white">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Green Status</CardTitle>
+              <CardTitle className="text-sm font-medium text-[#003D7A]">Green Status</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-green-600">{health.green}</div>
-              <p className="text-xs text-muted-foreground mt-2">Performing as expected</p>
+              <p className="text-xs text-[#003D7A] mt-2">Performing as expected</p>
             </CardContent>
           </Card>
 
-          <Card className="kpi-card">
+          <Card className="kpi-card border-l-4 border-l-amber-600 bg-gradient-to-br from-amber-50 to-white">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Yellow Status</CardTitle>
+              <CardTitle className="text-sm font-medium text-[#003D7A]">Yellow Status</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl font-bold text-amber-600">{health.yellow}</span>
                 <Clock className="w-4 h-4 text-amber-600" />
               </div>
-              <p className="text-xs text-muted-foreground mt-2">Needs attention</p>
+              <p className="text-xs text-[#003D7A] mt-2">Needs attention</p>
             </CardContent>
           </Card>
 
-          <Card className="kpi-card">
+          <Card className="kpi-card border-l-4 border-l-red-600 bg-gradient-to-br from-red-50 to-white">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Red Status</CardTitle>
+              <CardTitle className="text-sm font-medium text-[#003D7A]">Red Status</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl font-bold text-red-600">{health.red}</span>
                 <AlertCircle className="w-4 h-4 text-red-600" />
               </div>
-              <p className="text-xs text-muted-foreground mt-2">Critical attention required</p>
+              <p className="text-xs text-[#003D7A] mt-2">Critical attention required</p>
             </CardContent>
           </Card>
         </div>
@@ -254,9 +257,9 @@ export default function Dashboard() {
         {/* Charts Row 1 */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           {/* Status Distribution */}
-          <Card className="chart-container">
-            <CardHeader>
-              <CardTitle>Overall Status Distribution</CardTitle>
+          <Card className="chart-container border-t-4 border-t-[#003D7A]">
+            <CardHeader className="bg-gradient-to-r from-[#003D7A]/5 to-[#F4B024]/5">
+              <CardTitle className="text-[#003D7A]">Overall Status Distribution</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
