@@ -9,6 +9,7 @@ import { useLocation } from 'wouter';
 import { institutions, variables, generatePerformanceData, ganttTasks, calculateHealthSummary } from '@/lib/mockData';
 import { useAuth } from '@/_core/hooks/useAuth';
 import { trpc } from '@/lib/trpc';
+import { getLoginUrl } from '@/const';
 import { useEffect } from 'react';
 
 export default function Dashboard() {
@@ -133,7 +134,7 @@ export default function Dashboard() {
                     logoutMutation.mutate(undefined, {
                       onSuccess: () => {
                         logout();
-                        setLocation('/');
+                        window.location.href = getLoginUrl();
                       }
                     });
                   }}

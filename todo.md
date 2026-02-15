@@ -2,7 +2,7 @@
 
 ## Current Issues to Fix
 - [x] Fix Export to Excel functionality (now downloads file automatically)
-- [x] Fix Sign Out button - now properly logs out and redirects to home
+- [x] Fix Sign Out button - now redirects to branded MCC login page
 - [x] Remove "System Status" indicator and replace with Sign Out
 
 ## Features Completed
