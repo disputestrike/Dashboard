@@ -5,7 +5,8 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Dashboard from "./pages/Dashboard";
-// Removed old page imports
+import GanttView from "./pages/GanttView";
+import InstitutionDetail from "./pages/InstitutionDetail";
 import AdminPanel from "./pages/AdminPanel";
 import Login from "./pages/Login";
 import { useAuth } from "./_core/hooks/useAuth";
@@ -25,7 +26,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Dashboard} />
-      {/* Gantt and Institution Detail routes removed */}
+      <Route path="/gantt" component={GanttView} />
+      <Route path="/institution" component={InstitutionDetail} />
       <Route path="/admin" component={AdminPanel} />
       <Route path="/login" component={Login} />
       <Route path="/404" component={NotFound} />

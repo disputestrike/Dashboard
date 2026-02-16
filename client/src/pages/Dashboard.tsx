@@ -1,291 +1,303 @@
+import { useState, useMemo } from 'react';
+import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Clock, Calendar, Zap, Download, Settings } from 'lucide-react';
+import { useLocation } from 'wouter';
+import { institutions, variables, generatePerformanceData, ganttTasks, calculateHealthSummary } from '@/lib/mockData';
 import { useAuth } from '@/_core/hooks/useAuth';
 import { trpc } from '@/lib/trpc';
-import { allGoals, cabinetAreas, executiveCabinet, campuses, months } from '@/lib/mockData';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Download, LogOut } from 'lucide-react';
-import { useLocation } from 'wouter';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 export default function Dashboard() {
-  const { user } = useAuth();
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
+  const { user, logout } = useAuth();
+  const [selectedInstitution, setSelectedInstitution] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedMonth, setSelectedMonth] = useState<string>('December');
+  const exportMutation = trpc.export.toExcel.useMutation();
   const logoutMutation = trpc.auth.logout.useMutation();
-  const [selectedGoal, setSelectedGoal] = useState<'A' | 'B' | 'C' | 'D'>('A');
-  const [exportLoading, setExportLoading] = useState(false);
 
-  const handleLogout = async () => {
-    await logoutMutation.mutateAsync();
-    setLocation('/login');
-  };
+  const performanceData = useMemo(() => generatePerformanceData(), []);
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-  const handleExport = async () => {
-    setExportLoading(true);
-    try {
-      const response = await fetch('/api/trpc/export.generateExcel', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({}),
-      });
+  // Handle export file download
+  useEffect(() => {
+    if (exportMutation.data?.success && exportMutation.data?.buffer) {
+      const buffer = Buffer.from(exportMutation.data.buffer, 'base64');
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = exportMutation.data.fileName;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }
+  }, [exportMutation.data]);
 
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `MCC_Dashboard_${new Date().toISOString().split('T')[0]}.xlsx`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+  // Filter data based on selections
+  const filteredData = useMemo(() => {
+    return performanceData.filter((record) => {
+      const matchInstitution = selectedInstitution === 'all' || record.institutionId === selectedInstitution;
+      const matchCategory = selectedCategory === 'all' || variables.find((v) => v.name === record.variableName)?.category === selectedCategory;
+      return matchInstitution && matchCategory;
+    });
+  }, [performanceData, selectedInstitution, selectedCategory]);
+
+  // Calculate health summary
+  const health = useMemo(() => calculateHealthSummary(filteredData), [filteredData]);
+
+  // Prepare chart data
+  const institutionHealthData = useMemo(() => {
+    const institutionStats: Record<string, { green: number; yellow: number; red: number }> = {};
+    institutions.forEach((inst) => {
+      institutionStats[inst.name] = { green: 0, yellow: 0, red: 0 };
+    });
+
+    filteredData.forEach((record) => {
+      const inst = institutions.find((i) => i.id === record.institutionId);
+      if (inst) {
+        institutionStats[inst.name][record.status.toLowerCase() as 'green' | 'yellow' | 'red']++;
       }
-    } catch (error) {
-      console.error('Export failed:', error);
-    } finally {
-      setExportLoading(false);
-    }
-  };
+    });
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'green':
-        return '#10b981';
-      case 'yellow':
-        return '#f59e0b';
-      case 'red':
-        return '#ef4444';
-      default:
-        return '#6b7280';
-    }
-  };
+    return Object.entries(institutionStats).map(([name, stats]) => ({
+      name,
+      Green: stats.green,
+      Yellow: stats.yellow,
+      Red: stats.red,
+    }));
+  }, [filteredData]);
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'green':
-        return <Badge className="bg-green-500 hover:bg-green-600">On Track</Badge>;
-      case 'yellow':
-        return <Badge className="bg-yellow-500 hover:bg-yellow-600">At Risk</Badge>;
-      case 'red':
-        return <Badge className="bg-red-500 hover:bg-red-600">Off Track</Badge>;
-      default:
-        return <Badge>Unknown</Badge>;
-    }
-  };
+  const categoryHealthData = useMemo(() => {
+    const categoryStats: Record<string, { green: number; yellow: number; red: number }> = {};
+    variables.forEach((v) => {
+      if (selectedCategory === 'all' || v.category === selectedCategory) {
+        categoryStats[v.category] = categoryStats[v.category] || { green: 0, yellow: 0, red: 0 };
+      }
+    });
 
-  // Calculate overall statistics
-  const allInitiatives = allGoals.flatMap((g) => g.initiatives);
-  const statusCounts = {
-    green: allInitiatives.filter((i) => i.status === 'green').length,
-    yellow: allInitiatives.filter((i) => i.status === 'yellow').length,
-    red: allInitiatives.filter((i) => i.status === 'red').length,
-  };
+    filteredData.forEach((record) => {
+      const variable = variables.find((v) => v.name === record.variableName);
+      if (variable && (selectedCategory === 'all' || variable.category === selectedCategory)) {
+        categoryStats[variable.category][record.status.toLowerCase() as 'green' | 'yellow' | 'red']++;
+      }
+    });
 
-  const goalProgressData = allGoals.map((goal) => ({
-    goal: `Goal ${goal.id}`,
-    progress: Math.round(
-      goal.initiatives.reduce((sum, init) => sum + init.progress, 0) / goal.initiatives.length
-    ),
-  }));
+    return Object.entries(categoryStats).map(([name, stats]) => ({
+      name,
+      ...stats,
+    }));
+  }, [filteredData, selectedCategory]);
+
+  const statusDistribution = [
+    { name: 'Green', value: health.green, color: '#16a34a' },
+    { name: 'Yellow', value: health.yellow, color: '#f59e0b' },
+    { name: 'Red', value: health.red, color: '#dc2626' },
+  ];
+
+  const trendData = useMemo(() => {
+    return months.map((month) => {
+      const monthData = performanceData.filter((d) => d.month === month);
+      const green = monthData.filter((d) => d.status === 'Green').length;
+      return {
+        month: month.substring(0, 3),
+        Green: green,
+        Total: monthData.length,
+      };
+    });
+  }, [performanceData]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#003D7A] to-[#0052A3] border-b-4 border-[#F4B024] shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="bg-gradient-to-r from-[#003D7A] to-[#0052A3] border-b-4 border-[#F4B024]">
+        <div className="container py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
-                <span className="text-[#003D7A] font-bold text-lg">MCC</span>
-              </div>
+              <img src="/mcc-logo.svg" alt="MCC Logo" className="h-12 w-12" />
               <div>
                 <h1 className="text-3xl font-bold text-white">MCC Kansas City</h1>
-                <p className="text-[#F4B024] text-sm font-medium">Institutional Performance Dashboard</p>
+                <p className="text-blue-100 mt-1">Institutional Performance Dashboard</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Button
-                onClick={handleExport}
-                disabled={exportLoading}
-                className="bg-[#F4B024] hover:bg-[#E6A91F] text-[#003D7A] font-semibold"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                {exportLoading ? 'Exporting...' : 'Export Excel'}
-              </Button>
-              <Button
-                onClick={handleLogout}
-                disabled={logoutMutation.isPending}
-                variant="outline"
-                className="border-white text-white hover:bg-white/10"
-              >
-                <LogOut className="w-4 h-4 mr-2" />
-                {logoutMutation.isPending ? 'Signing out...' : 'Sign Out'}
-              </Button>
+            <div className="text-right">
+              {user && (
+                <Button 
+                  variant="ghost"
+                  onClick={() => {
+                    logoutMutation.mutate(undefined, {
+                      onSuccess: () => {
+                        logout();
+                        setLocation('/login');
+                      }
+                    });
+                  }}
+                  disabled={logoutMutation.isPending}
+                  className="text-white hover:bg-white/20"
+                >
+                  {logoutMutation.isPending ? 'Signing out...' : 'Sign Out'}
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Cabinet Areas Overview */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-[#003D7A] mb-4">Cabinet Areas</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {cabinetAreas.map((area) => (
-              <Card key={area.id} className="border-l-4 border-l-[#003D7A] hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg text-[#003D7A]">{area.name}</CardTitle>
-                  <CardDescription className="text-sm">{area.lead}</CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
+      {/* Filters */}
+      <div className="border-b border-border bg-card">
+        <div className="container py-4">
+          <div className="flex flex-wrap gap-4 items-end">
+            <div className="flex-1 min-w-[200px]">
+              <label className="text-sm font-medium text-foreground mb-2 block">Institution</label>
+              <Select value={selectedInstitution} onValueChange={setSelectedInstitution}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Institutions</SelectItem>
+                  {institutions.map((inst) => (
+                    <SelectItem key={inst.id} value={inst.id}>
+                      {inst.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex-1 min-w-[200px]">
+              <label className="text-sm font-medium text-foreground mb-2 block">Category</label>
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="Academic">Academic</SelectItem>
+                  <SelectItem value="Financial">Financial</SelectItem>
+                  <SelectItem value="Compliance">Compliance</SelectItem>
+                  <SelectItem value="Student Services">Student Services</SelectItem>
+                  <SelectItem value="Operations">Operations</SelectItem>
+                  <SelectItem value="Admin">Admin</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex-1 min-w-[200px]">
+              <label className="text-sm font-medium text-foreground mb-2 block">Month</label>
+              <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {months.map((month) => (
+                    <SelectItem key={month} value={month}>
+                      {month}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <Button variant="outline" onClick={() => setLocation('/gantt')} className="flex items-center gap-2">
+              <Calendar className="w-4 h-4" />
+              View Gantt
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => exportMutation.mutate({ institutionId: selectedInstitution, month: selectedMonth })}
+              disabled={exportMutation.isPending}
+              className="flex items-center gap-2"
+            >
+              <Download className="w-4 h-4" />
+              {exportMutation.isPending ? 'Exporting...' : 'Export Excel'}
+            </Button>
+            {user?.role === 'admin' && (
+              <Button 
+                variant="outline" 
+                onClick={() => setLocation('/admin')}
+                className="flex items-center gap-2"
+              >
+                <Settings className="w-4 h-4" />
+                Admin
+              </Button>
+            )}
           </div>
         </div>
+      </div>
 
-        {/* Overall Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card className="border-l-4 border-l-green-500 bg-green-50">
+      {/* Main Content */}
+      <div className="container py-8">
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <Card className="kpi-card border-l-4 border-l-green-600 bg-gradient-to-br from-green-50 to-white">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-[#003D7A]">On Track</CardTitle>
+              <CardTitle className="text-sm font-medium text-[#003D7A]">Healthy Status</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-green-600">{statusCounts.green}</div>
-              <p className="text-xs text-gray-600 mt-1">Initiatives</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold text-green-600">{health.healthPercentage}%</span>
+                <TrendingUp className="w-4 h-4 text-green-600" />
+              </div>
+              <p className="text-xs text-[#003D7A] mt-2">{health.green} of {health.total} metrics</p>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-yellow-500 bg-yellow-50">
+          <Card className="kpi-card border-l-4 border-l-green-600 bg-gradient-to-br from-green-50 to-white">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-[#003D7A]">At Risk</CardTitle>
+              <CardTitle className="text-sm font-medium text-[#003D7A]">Green Status</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-yellow-600">{statusCounts.yellow}</div>
-              <p className="text-xs text-gray-600 mt-1">Initiatives</p>
+              <div className="text-3xl font-bold text-green-600">{health.green}</div>
+              <p className="text-xs text-[#003D7A] mt-2">Performing as expected</p>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-red-500 bg-red-50">
+          <Card className="kpi-card border-l-4 border-l-amber-600 bg-gradient-to-br from-amber-50 to-white">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-[#003D7A]">Off Track</CardTitle>
+              <CardTitle className="text-sm font-medium text-[#003D7A]">Yellow Status</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-red-600">{statusCounts.red}</div>
-              <p className="text-xs text-gray-600 mt-1">Initiatives</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold text-amber-600">{health.yellow}</span>
+                <Clock className="w-4 h-4 text-amber-600" />
+              </div>
+              <p className="text-xs text-[#003D7A] mt-2">Needs attention</p>
+            </CardContent>
+          </Card>
+
+          <Card className="kpi-card border-l-4 border-l-red-600 bg-gradient-to-br from-red-50 to-white">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-[#003D7A]">Red Status</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold text-red-600">{health.red}</span>
+                <AlertCircle className="w-4 h-4 text-red-600" />
+              </div>
+              <p className="text-xs text-[#003D7A] mt-2">Critical attention required</p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Strategic Goals */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-[#003D7A] mb-4">Strategic Goals</h2>
-
-          <Tabs value={selectedGoal} onValueChange={(val) => setSelectedGoal(val as 'A' | 'B' | 'C' | 'D')}>
-            <TabsList className="grid w-full grid-cols-4 bg-[#003D7A]/10">
-              {allGoals.map((goal) => (
-                <TabsTrigger
-                  key={goal.id}
-                  value={goal.id}
-                  className="data-[state=active]:bg-[#003D7A] data-[state=active]:text-white"
-                >
-                  <span className="font-bold">Goal {goal.id}</span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
-
-            {allGoals.map((goal) => (
-              <TabsContent key={goal.id} value={goal.id} className="space-y-6">
-                {/* Goal Header */}
-                <Card className="border-l-4 border-l-[#003D7A] bg-[#003D7A]/5">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle className="text-xl text-[#003D7A]">Goal {goal.id}: {goal.name}</CardTitle>
-                        <CardDescription className="mt-2">{goal.description}</CardDescription>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-3xl font-bold text-[#003D7A]">{goal.initiatives.length}</div>
-                        <div className="text-sm text-gray-600">Initiatives</div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-
-                {/* Initiatives */}
-                <div className="space-y-4">
-                  {goal.initiatives.map((initiative) => (
-                    <Card key={initiative.id} className="border-l-4" style={{ borderLeftColor: getStatusColor(initiative.status) }}>
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <CardTitle className="text-base text-[#003D7A]">{initiative.name}</CardTitle>
-                            <div className="flex items-center gap-3 mt-2">
-                              <span className="text-sm text-gray-600">Lead: {initiative.lead}</span>
-                              {getStatusBadge(initiative.status)}
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-2xl font-bold text-[#003D7A]">{initiative.progress}%</div>
-                            <div className="text-xs text-gray-600">Progress</div>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        {/* 4 Sub-boxes */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                          {initiative.subBoxes.map((subBox) => (
-                            <div
-                              key={subBox.id}
-                              className={`p-4 rounded-lg border-2 transition-colors ${
-                                subBox.status === 'complete'
-                                  ? 'border-green-300 bg-green-50'
-                                  : subBox.status === 'in-progress'
-                                  ? 'border-blue-300 bg-blue-50'
-                                  : 'border-gray-300 bg-gray-50'
-                              }`}
-                            >
-                              <div className="text-sm font-semibold text-[#003D7A]">{subBox.label}</div>
-                              <div className="text-xs text-gray-600 mt-2 capitalize">{subBox.status.replace('-', ' ')}</div>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
-        </div>
-
-        {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-[#003D7A]">Initiative Status Distribution</CardTitle>
+        {/* Charts Row 1 */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* Status Distribution */}
+          <Card className="chart-container border-t-4 border-t-[#003D7A]">
+            <CardHeader className="bg-gradient-to-r from-[#003D7A]/5 to-[#F4B024]/5">
+              <CardTitle className="text-[#003D7A]">Overall Status Distribution</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
-                  <Pie
-                    data={[
-                      { name: 'On Track', value: statusCounts.green, fill: '#10b981' },
-                      { name: 'At Risk', value: statusCounts.yellow, fill: '#f59e0b' },
-                      { name: 'Off Track', value: statusCounts.red, fill: '#ef4444' },
-                    ]}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, value }) => `${name}: ${value}`}
-                    outerRadius={100}
-                    dataKey="value"
-                  >
-                    <Cell fill="#10b981" />
-                    <Cell fill="#f59e0b" />
-                    <Cell fill="#ef4444" />
+                  <Pie data={statusDistribution} cx="50%" cy="50%" labelLine={false} label={({ name, value }) => `${name}: ${value}`} outerRadius={80} fill="#8884d8" dataKey="value">
+                    {statusDistribution.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
                   </Pie>
                   <Tooltip />
                 </PieChart>
@@ -293,52 +305,96 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card>
+          {/* Trend Over Time */}
+          <Card className="chart-container lg:col-span-2">
             <CardHeader>
-              <CardTitle className="text-[#003D7A]">Goal Progress Overview</CardTitle>
+              <CardTitle>Performance Trend (12 Months)</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={goalProgressData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="goal" />
+                <LineChart data={trendData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="month" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="progress" fill="#003D7A" />
+                  <Legend />
+                  <Line type="monotone" dataKey="Green" stroke="#16a34a" strokeWidth={2} />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Charts Row 2 */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {/* Institution Health */}
+          <Card className="chart-container">
+            <CardHeader>
+              <CardTitle>Institution Health Status</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={350}>
+                <BarChart data={institutionHealthData.slice(0, 6)}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="Green" fill="#16a34a" />
+                  <Bar dataKey="Yellow" fill="#f59e0b" />
+                  <Bar dataKey="Red" fill="#dc2626" />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          {/* Category Performance */}
+          <Card className="chart-container">
+            <CardHeader>
+              <CardTitle>Performance by Category</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={350}>
+                <BarChart data={categoryHealthData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="green" fill="#16a34a" name="Green" />
+                  <Bar dataKey="yellow" fill="#f59e0b" name="Yellow" />
+                  <Bar dataKey="red" fill="#dc2626" name="Red" />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
         </div>
 
-        {/* Executive Cabinet */}
-        <Card className="mb-8">
+        {/* Recent Tasks / Gantt Preview */}
+        <Card className="chart-container">
           <CardHeader>
-            <CardTitle className="text-[#003D7A]">Executive Cabinet</CardTitle>
+            <CardTitle>Active Institutional Initiatives</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {executiveCabinet.map((exec, idx) => (
-                <div key={idx} className="p-4 border border-gray-200 rounded-lg hover:border-[#003D7A] hover:bg-[#003D7A]/5 transition-colors">
-                  <div className="font-semibold text-[#003D7A]">{exec.name}</div>
-                  <div className="text-sm text-gray-600 mt-1">{exec.title}</div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Campuses */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-[#003D7A]">MCC Campuses</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-              {campuses.map((campus) => (
-                <div key={campus.id} className="p-4 border border-gray-200 rounded-lg hover:border-[#F4B024] hover:bg-[#F4B024]/5 transition-colors">
-                  <div className="font-semibold text-[#003D7A]">{campus.name}</div>
-                  <div className="text-sm text-gray-600 mt-1">President: {campus.president}</div>
+            <div className="space-y-4">
+              {ganttTasks.slice(0, 5).map((task) => (
+                <div key={task.id} className="border-b border-border pb-4 last:border-0">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <h4 className="font-medium text-foreground">{task.name}</h4>
+                      <p className="text-sm text-muted-foreground">Assigned to: {task.assignedTo}</p>
+                    </div>
+                    <Badge variant={task.status === 'Complete' ? 'default' : task.status === 'At Risk' ? 'destructive' : 'secondary'}>{task.status}</Badge>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 bg-secondary rounded-full h-2">
+                      <div className="bg-primary h-2 rounded-full" style={{ width: `${task.percentComplete}%` }} />
+                    </div>
+                    <span className="text-sm font-medium text-foreground">{task.percentComplete}%</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    {task.startDate} to {task.endDate}
+                  </p>
                 </div>
               ))}
             </div>
