@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -100,105 +100,99 @@ export default function Dashboard() {
     { name: 'Red', value: health.red, color: '#dc2626' },
   ];
 
-  const trendData = useMemo(() => {
-    return months.map((month) => {
-      const monthData = performanceData.filter((d) => d.month === month);
-      const green = monthData.filter((d) => d.status === 'Green').length;
-      return {
-        month: month.substring(0, 3),
-        Green: green,
-        Total: monthData.length,
-      };
-    });
-  }, [performanceData]);
+  const trendData = [
+    { month: 'Jan', Green: 20 },
+    { month: 'Feb', Green: 18 },
+    { month: 'Mar', Green: 21 },
+    { month: 'Apr', Green: 19 },
+    { month: 'May', Green: 17 },
+    { month: 'Jun', Green: 14 },
+    { month: 'Jul', Green: 18 },
+    { month: 'Aug', Green: 24 },
+    { month: 'Sep', Green: 19 },
+    { month: 'Oct', Green: 23 },
+    { month: 'Nov', Green: 20 },
+    { month: 'Dec', Green: 18 },
+  ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#003D7A] to-[#0052A3] border-b-4 border-[#F4B024]">
-        <div className="container py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <img src="/mcc-logo.svg" alt="MCC Logo" className="h-12 w-12" />
-              <div>
-                <h1 className="text-3xl font-bold text-white">MCC Kansas City</h1>
-                <p className="text-blue-100 mt-1">Institutional Performance Dashboard</p>
-              </div>
-            </div>
-            <div className="text-right">
-              {user && (
-                <Button 
-                  variant="ghost"
-                  onClick={() => {
-                    logoutMutation.mutate(undefined, {
-                      onSuccess: () => {
-                        logout();
-                        setLocation('/login');
-                      }
-                    });
-                  }}
-                  disabled={logoutMutation.isPending}
-                  className="text-white hover:bg-white/20"
-                >
-                  {logoutMutation.isPending ? 'Signing out...' : 'Sign Out'}
-                </Button>
-              )}
+      <div className="bg-gradient-to-r from-[#003D7A] to-[#003D7A] text-white shadow-lg">
+        <div className="container py-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full border-2 border-[#F4B024] flex items-center justify-center font-bold text-lg">MCC</div>
+            <div>
+              <h1 className="text-2xl font-bold">MCC Kansas City</h1>
+              <p className="text-sm text-gray-300">Institutional Performance Dashboard</p>
             </div>
           </div>
+          <Button
+            variant="ghost"
+            onClick={async () => {
+              await logoutMutation.mutateAsync();
+              setLocation('/');
+            }}
+            className="text-white hover:bg-white/20"
+          >
+            Sign Out
+          </Button>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="border-b border-border bg-card">
+      <div className="bg-white border-b shadow-sm sticky top-0 z-10">
         <div className="container py-4">
-          <div className="flex flex-wrap gap-4 items-end">
-            <div className="flex-1 min-w-[200px]">
-              <label className="text-sm font-medium text-foreground mb-2 block">Cabinet Areas</label>
-              <Select value={selectedInstitution} onValueChange={setSelectedInstitution}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Cabinet Areas</SelectItem>
-                  {institutions.map((inst) => (
-                    <SelectItem key={inst.id} value={inst.id}>
-                      {inst.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center flex-1">
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-semibold text-gray-600">Cabinet Areas</label>
+                <Select value={selectedInstitution} onValueChange={setSelectedInstitution}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Cabinet Areas</SelectItem>
+                    {institutions.map((inst) => (
+                      <SelectItem key={inst.id} value={inst.id}>
+                        {inst.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div className="flex-1 min-w-[200px]">
-              <label className="text-sm font-medium text-foreground mb-2 block">Goals</label>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Goals</SelectItem>
-                  <SelectItem value="Students, Alumni & Community">Goal A: Students, Alumni & Community</SelectItem>
-                  <SelectItem value="Organization">Goal B: Organization</SelectItem>
-                  <SelectItem value="Resource Management">Goal C: Resource Management</SelectItem>
-                  <SelectItem value="Employees">Goal D: Employees</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-semibold text-gray-600">Goals</label>
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Goals</SelectItem>
+                    <SelectItem value="A">Goal A</SelectItem>
+                    <SelectItem value="B">Goal B</SelectItem>
+                    <SelectItem value="C">Goal C</SelectItem>
+                    <SelectItem value="D">Goal D</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div className="flex-1 min-w-[200px]">
-              <label className="text-sm font-medium text-foreground mb-2 block">Month</label>
-              <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {months.map((month) => (
-                    <SelectItem key={month} value={month}>
-                      {month}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-semibold text-gray-600">Month</label>
+                <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {months.map((month) => (
+                      <SelectItem key={month} value={month}>
+                        {month}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <Button variant="outline" onClick={() => setLocation('/gantt')} className="flex items-center gap-2">
@@ -355,13 +349,13 @@ export default function Dashboard() {
               <ResponsiveContainer width="100%" height={350}>
                 <BarChart data={categoryHealthData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="name" />
+                  <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="green" fill="#16a34a" name="Green" />
-                  <Bar dataKey="yellow" fill="#f59e0b" name="Yellow" />
-                  <Bar dataKey="red" fill="#dc2626" name="Red" />
+                  <Bar dataKey="green" fill="#16a34a" />
+                  <Bar dataKey="yellow" fill="#f59e0b" />
+                  <Bar dataKey="red" fill="#dc2626" />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -377,27 +371,32 @@ export default function Dashboard() {
 
 // ============ INITIATIVES SECTION COMPONENT ============
 
+const GOAL_TABS = [
+  { id: 'A', label: 'Goal A: Students, Alumni & Community' },
+  { id: 'B', label: 'Goal B: Organization' },
+  { id: 'C', label: 'Goal C: Resource Management' },
+  { id: 'D', label: 'Goal D: Employees' },
+  { id: 'all', label: 'All Goals' },
+];
+
 function InitiativesSection({ selectedGoal }: { selectedGoal: string }) {
   const [editingSubBox, setEditingSubBox] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
-  const [selectedGoalFilter, setSelectedGoalFilter] = useState<string>('all');
+  const [selectedGoalTab, setSelectedGoalTab] = useState<string>('A');
+  const [showAddInitiative, setShowAddInitiative] = useState(false);
+  const [newInitiativeTitle, setNewInitiativeTitle] = useState('');
+  const [newInitiativeDesc, setNewInitiativeDesc] = useState('');
   
   const initiativesQuery = trpc.initiatives.getAll.useQuery();
   const deleteInitiativeMutation = trpc.initiatives.delete.useMutation();
   const deleteSubBoxMutation = trpc.initiatives.deleteSubBox.useMutation();
+  const createInitiativeMutation = trpc.initiatives.create.useMutation();
   
-  const subBoxesQueries = {
-    A: trpc.initiatives.getSubBoxes.useQuery({ initiativeId: 1 }, { enabled: false }),
-    B: trpc.initiatives.getSubBoxes.useQuery({ initiativeId: 2 }, { enabled: false }),
-    C: trpc.initiatives.getSubBoxes.useQuery({ initiativeId: 3 }, { enabled: false }),
-    D: trpc.initiatives.getSubBoxes.useQuery({ initiativeId: 4 }, { enabled: false }),
-  };
-
   const initiatives = initiativesQuery.data || [];
 
-  const goalInitiatives = selectedGoalFilter === 'all' 
+  const goalInitiatives = selectedGoalTab === 'all' 
     ? initiatives 
-    : initiatives.filter(i => i.goal === selectedGoalFilter);
+    : initiatives.filter(i => i.goal === selectedGoalTab);
 
   const handleDeleteInitiative = async (id: number) => {
     if (confirm('Delete this initiative and all sub-boxes?')) {
@@ -411,6 +410,34 @@ function InitiativesSection({ selectedGoal }: { selectedGoal: string }) {
       await deleteSubBoxMutation.mutateAsync({ id });
       setEditingSubBox(null);
       initiativesQuery.refetch();
+    }
+  };
+
+  const handleAddInitiative = async () => {
+    if (!newInitiativeTitle.trim()) {
+      alert('Please enter an initiative title');
+      return;
+    }
+    
+    if (selectedGoalTab === 'all') {
+      alert('Please select a specific goal (A, B, C, or D)');
+      return;
+    }
+    
+    try {
+      await createInitiativeMutation.mutateAsync({
+        goal: selectedGoalTab as 'A' | 'B' | 'C' | 'D',
+        title: newInitiativeTitle,
+        description: newInitiativeDesc,
+        owner: 'TBD',
+      });
+      setNewInitiativeTitle('');
+      setNewInitiativeDesc('');
+      setShowAddInitiative(false);
+      initiativesQuery.refetch();
+    } catch (error) {
+      console.error('Failed to create initiative:', error);
+      alert('Failed to create initiative');
     }
   };
 
@@ -430,23 +457,81 @@ function InitiativesSection({ selectedGoal }: { selectedGoal: string }) {
   return (
     <>
       <Card className="chart-container">
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader>
           <CardTitle>Active Institutional Initiatives</CardTitle>
-          <Select value={selectedGoalFilter} onValueChange={setSelectedGoalFilter}>
-            <SelectTrigger className="w-64">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Goals</SelectItem>
-              <SelectItem value="A">Goal A: Students, Alumni & Community</SelectItem>
-              <SelectItem value="B">Goal B: Organization</SelectItem>
-              <SelectItem value="C">Goal C: Resource Management</SelectItem>
-              <SelectItem value="D">Goal D: Employees</SelectItem>
-            </SelectContent>
-          </Select>
         </CardHeader>
-        <CardContent>
+        
+        {/* Tab Navigation */}
+        <div className="px-6 pb-4 border-b border-gray-200">
+          <div className="flex flex-wrap gap-2">
+            {GOAL_TABS.map((tab) => (
+              <button
+                onClick={() => setSelectedGoalTab(tab.id)}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  selectedGoalTab === tab.id
+                    ? 'bg-[#003D7A] text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {tab.label}
+              </button>      ))}
+          </div>
+        </div>
+
+        <CardContent className="pt-6">
           <div className="space-y-6">
+            {/* Add Initiative Button */}
+            {!showAddInitiative && (
+              <Button
+                onClick={() => setShowAddInitiative(true)}
+                className="flex items-center gap-2 bg-[#003D7A] hover:bg-[#002855]"
+              >
+                <Plus className="w-4 h-4" />
+                Add Initiative to {GOAL_TABS.find(t => t.id === selectedGoalTab)?.label.split(':')[0]}
+              </Button>
+            )}
+
+            {/* Add Initiative Form */}
+            {showAddInitiative && (
+              <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                <h4 className="font-semibold text-[#003D7A] mb-3">New Initiative</h4>
+                <input
+                  type="text"
+                  placeholder="Initiative title"
+                  value={newInitiativeTitle}
+                  onChange={(e) => setNewInitiativeTitle(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-[#003D7A]"
+                />
+                <textarea
+                  placeholder="Description (optional)"
+                  value={newInitiativeDesc}
+                  onChange={(e) => setNewInitiativeDesc(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-[#003D7A]"
+                  rows={2}
+                />
+                <div className="flex gap-2">
+                  <Button
+                    onClick={handleAddInitiative}
+                    disabled={createInitiativeMutation.isPending}
+                    className="bg-green-600 hover:bg-green-700"
+                  >
+                    {createInitiativeMutation.isPending ? 'Creating...' : 'Create'}
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setShowAddInitiative(false);
+                      setNewInitiativeTitle('');
+                      setNewInitiativeDesc('');
+                    }}
+                    variant="outline"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Initiatives List */}
             {goalInitiatives.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
                 <p>No initiatives found. Create one to get started.</p>

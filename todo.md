@@ -32,3 +32,13 @@
 - [x] Test all CRUD operations
 - [x] Test goal filtering
 - [ ] Test document upload
+
+## UI/UX Improvements - Tab Navigation & CRUD
+- [x] Replace dropdown filter with Goal tabs (A, B, C, D, All)
+- [x] Fix sub-box adding bug (users cannot add subcategories)
+- [x] Add "Add Initiative" button for each goal tab
+- [x] Add delete initiative functionality with confirmation
+- [x] Test tab navigation and switching between goals
+- [x] Test adding new initiatives from UI
+- [x] Test deleting initiatives
+- [x] Test sub-box creation after bug fix
