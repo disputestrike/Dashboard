@@ -1,11 +1,45 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { getLoginUrl } from '@/const';
-import { Lock, Building2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Lock, Building2, Loader2 } from 'lucide-react';
+import { useLocation } from 'wouter';
+import { trpc } from '@/lib/trpc';
+import { toast } from 'sonner';
 
 export default function Login() {
-  const handleLogin = () => {
-    window.location.href = getLoginUrl();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [, setLocation] = useLocation();
+
+  const loginMutation = trpc.auth.loginLocal.useMutation();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!username || !password) {
+      toast.error('Please enter username and password');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const result = await loginMutation.mutateAsync({ username, password });
+      
+      if (result.success) {
+        toast.success('Login successful!');
+        // Redirect to dashboard
+        setLocation('/');
+      } else {
+        toast.error(result.error || 'Login failed');
+      }
+    } catch (error) {
+      toast.error('Login error. Please try again.');
+      console.error('Login error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -46,7 +80,7 @@ export default function Login() {
 
             {/* Card Content */}
             <CardContent className="pt-8 pb-8">
-              <div className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Welcome Section */}
                 <div className="bg-gradient-to-br from-[#003D7A]/5 to-[#F4B024]/5 border-l-4 border-[#F4B024] rounded-lg p-4">
                   <h3 className="font-bold text-[#003D7A] mb-2 flex items-center gap-2">
@@ -54,17 +88,62 @@ export default function Login() {
                     Welcome to MCC Dashboard
                   </h3>
                   <p className="text-sm text-gray-700 leading-relaxed">
-                    Access real-time institutional performance metrics, analytics, and reporting across all MCC campuses. Sign in with your authorized credentials to continue.
+                    Sign in with your credentials to access real-time institutional performance metrics and analytics.
                   </p>
+                </div>
+
+                {/* Username Field */}
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-[#003D7A]">Username</label>
+                  <Input
+                    type="text"
+                    placeholder="Enter your username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    disabled={isLoading}
+                    className="border-gray-300 focus:border-[#F4B024] focus:ring-[#F4B024]"
+                  />
+                </div>
+
+                {/* Password Field */}
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-[#003D7A]">Password</label>
+                  <Input
+                    type="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={isLoading}
+                    className="border-gray-300 focus:border-[#F4B024] focus:ring-[#F4B024]"
+                  />
                 </div>
 
                 {/* Sign In Button */}
                 <Button
-                  onClick={handleLogin}
-                  className="w-full bg-[#F4B024] hover:bg-[#E5A01F] text-[#003D7A] font-bold py-6 text-lg rounded-lg transition-all hover:shadow-lg active:scale-95"
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-[#F4B024] hover:bg-[#E5A01F] text-[#003D7A] font-bold py-6 text-lg rounded-lg transition-all hover:shadow-lg active:scale-95 disabled:opacity-50"
                 >
-                  Sign In to Dashboard
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Signing in...
+                    </>
+                  ) : (
+                    'Sign In to Dashboard'
+                  )}
                 </Button>
+
+                {/* Demo Credentials */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                  <p className="text-xs font-semibold text-blue-900 mb-2">Demo Credentials:</p>
+                  <p className="text-xs text-blue-800">
+                    <strong>Username:</strong> john.chawana
+                  </p>
+                  <p className="text-xs text-blue-800">
+                    <strong>Password:</strong> MCC@Demo123
+                  </p>
+                </div>
 
                 {/* Security Notice */}
                 <div className="border-t border-gray-200 pt-4">
@@ -73,7 +152,7 @@ export default function Login() {
                     Unauthorized access attempts are monitored and logged.
                   </p>
                 </div>
-              </div>
+              </form>
             </CardContent>
           </Card>
 

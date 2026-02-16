@@ -22,6 +22,13 @@
       "when": 1771121020577,
       "tag": "0002_parched_storm",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1771269335193,
+      "tag": "0003_normal_dazzler",
+      "breakpoints": true
     }
   ]
 }

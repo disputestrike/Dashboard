@@ -2,8 +2,57 @@ import { protectedProcedure, router } from "../_core/trpc";
 import { z } from "zod";
 import { rbacService } from "../rbac";
 import { TRPCError } from "@trpc/server";
+import { upsertUser } from "../db";
 
 export const rbacRouter = router({
+  /**
+   * Create demo user (admin only) - for testing/demo purposes
+   */
+  createDemoUser: protectedProcedure
+    .input(
+      z.object({
+        email: z.string().email(),
+        name: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (ctx.user?.role !== "admin") {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Only admins can create demo users" });
+      }
+
+      try {
+        const demoOpenId = `demo-${input.email.split('@')[0]}-${Date.now()}`;
+        const now = new Date();
+
+        await upsertUser({
+          openId: demoOpenId,
+          email: input.email,
+          name: input.name,
+          loginMethod: "demo",
+          role: "admin",
+          createdAt: now,
+          updatedAt: now,
+          lastSignedIn: now,
+        });
+
+        return {
+          success: true,
+          message: `Demo user ${input.email} created successfully with Admin role`,
+          user: {
+            email: input.email,
+            name: input.name,
+            role: "admin",
+          },
+        };
+      } catch (error) {
+        console.error("Error creating demo user:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to create demo user",
+        });
+      }
+    }),
+
   /**
    * Get all users (admin only)
    */

@@ -6,16 +6,17 @@ import { exportRouter } from "./routers/export";
 import { smartsheetRouter } from "./routers/smartsheet";
 import { rbacRouter } from "./routers/rbac";
 import { roleManagementRouter } from "./routers/roleManagement";
+import { z } from "zod";
+import { authenticateUser } from "./auth-service";
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   export: exportRouter,
   smartsheet: smartsheetRouter,
   rbac: rbacRouter,
   roleManagement: roleManagementRouter,
   auth: router({
-    me: publicProcedure.query(opts => opts.ctx.user),
+    me: publicProcedure.query((opts) => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
@@ -23,14 +24,33 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
-  }),
+    loginLocal: publicProcedure
+      .input(z.object({ username: z.string(), password: z.string() }))
+      .mutation(async ({ ctx, input }) => {
+        try {
+          const result = await authenticateUser(input.username, input.password);
 
-  // TODO: add feature routers here, e.g.
-  // todo: router({
-  //   list: protectedProcedure.query(({ ctx }) =>
-  //     db.getUserTodos(ctx.user.id)
-  //   ),
-  // }),
+          if (result.success && result.user) {
+            return {
+              success: true,
+              user: result.user,
+              message: "Login successful",
+            };
+          }
+
+          return {
+            success: false,
+            error: result.error || "Authentication failed",
+          };
+        } catch (error) {
+          console.error("Login error:", error);
+          return {
+            success: false,
+            error: "Login failed",
+          };
+        }
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
