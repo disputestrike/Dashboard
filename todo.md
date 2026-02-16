@@ -42,3 +42,6 @@
 - [x] Test adding new initiatives from UI
 - [x] Test deleting initiatives
 - [x] Test sub-box creation after bug fix
+
+## UI Refinements
+- [x] Add subtle background shade/styling to Sign Out button for better visibility
