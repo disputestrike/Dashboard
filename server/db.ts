@@ -90,3 +90,116 @@ export async function getUserByOpenId(openId: string) {
 }
 
 // TODO: add feature queries here as your schema grows.
+
+// ============ INITIATIVES & SUB-BOXES ============
+
+import { initiatives, subBoxes, InsertInitiative, InsertSubBox, Initiative, SubBox } from "../drizzle/schema";
+
+export async function getInitiativesByGoal(goal: "A" | "B" | "C" | "D") {
+  const db = await getDb();
+  if (!db) return [];
+  
+  try {
+    return await db.select().from(initiatives).where(eq(initiatives.goal, goal));
+  } catch (error) {
+    console.error("[Database] Failed to get initiatives by goal:", error);
+    return [];
+  }
+}
+
+export async function getAllInitiatives() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  try {
+    return await db.select().from(initiatives);
+  } catch (error) {
+    console.error("[Database] Failed to get all initiatives:", error);
+    return [];
+  }
+}
+
+export async function createInitiative(data: InsertInitiative) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  try {
+    const result = await db.insert(initiatives).values(data);
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to create initiative:", error);
+    throw error;
+  }
+}
+
+export async function updateInitiative(id: number, data: Partial<Initiative>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  try {
+    return await db.update(initiatives).set(data).where(eq(initiatives.id, id));
+  } catch (error) {
+    console.error("[Database] Failed to update initiative:", error);
+    throw error;
+  }
+}
+
+export async function deleteInitiative(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  try {
+    return await db.delete(initiatives).where(eq(initiatives.id, id));
+  } catch (error) {
+    console.error("[Database] Failed to delete initiative:", error);
+    throw error;
+  }
+}
+
+export async function getSubBoxesByInitiative(initiativeId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  try {
+    return await db.select().from(subBoxes).where(eq(subBoxes.initiativeId, initiativeId));
+  } catch (error) {
+    console.error("[Database] Failed to get sub-boxes:", error);
+    return [];
+  }
+}
+
+export async function createSubBox(data: InsertSubBox) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  try {
+    return await db.insert(subBoxes).values(data);
+  } catch (error) {
+    console.error("[Database] Failed to create sub-box:", error);
+    throw error;
+  }
+}
+
+export async function updateSubBox(id: number, data: Partial<SubBox>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  try {
+    return await db.update(subBoxes).set(data).where(eq(subBoxes.id, id));
+  } catch (error) {
+    console.error("[Database] Failed to update sub-box:", error);
+    throw error;
+  }
+}
+
+export async function deleteSubBox(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  try {
+    return await db.delete(subBoxes).where(eq(subBoxes.id, id));
+  } catch (error) {
+    console.error("[Database] Failed to delete sub-box:", error);
+    throw error;
+  }
+}

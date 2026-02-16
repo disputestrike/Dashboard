@@ -29,6 +29,13 @@
       "when": 1771269335193,
       "tag": "0003_normal_dazzler",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1771272516485,
+      "tag": "0004_open_moon_knight",
+      "breakpoints": true
     }
   ]
 }

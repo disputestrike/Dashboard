@@ -6,6 +6,7 @@ import { exportRouter } from "./routers/export";
 import { smartsheetRouter } from "./routers/smartsheet";
 import { rbacRouter } from "./routers/rbac";
 import { roleManagementRouter } from "./routers/roleManagement";
+import { initiativesRouter } from "./routers/initiatives";
 import { z } from "zod";
 import { authenticateUser } from "./auth-service";
 
@@ -15,6 +16,7 @@ export const appRouter = router({
   smartsheet: smartsheetRouter,
   rbac: rbacRouter,
   roleManagement: roleManagementRouter,
+  initiatives: initiativesRouter,
   auth: router({
     me: publicProcedure.query((opts) => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {

@@ -161,3 +161,43 @@ export const auditLog = mysqlTable("auditLog", {
 
 export type AuditLogEntry = typeof auditLog.$inferSelect;
 export type InsertAuditLogEntry = typeof auditLog.$inferInsert;
+
+/**
+ * Strategic Initiatives - organized by Goal (A, B, C, D)
+ */
+export const initiatives = mysqlTable("initiatives", {
+  id: int("id").autoincrement().primaryKey(),
+  initiativeId: varchar("initiativeId", { length: 64 }).notNull().unique(),
+  goal: mysqlEnum("goal", ["A", "B", "C", "D"]).notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  owner: varchar("owner", { length: 255 }),
+  status: mysqlEnum("status", ["Not Started", "In Progress", "Complete", "At Risk"]).default("Not Started").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Initiative = typeof initiatives.$inferSelect;
+export type InsertInitiative = typeof initiatives.$inferInsert;
+
+/**
+ * Sub-boxes - tracking items within each initiative (4 per initiative)
+ */
+export const subBoxes = mysqlTable("subBoxes", {
+  id: int("id").autoincrement().primaryKey(),
+  subBoxId: varchar("subBoxId", { length: 64 }).notNull().unique(),
+  initiativeId: int("initiativeId").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  status: mysqlEnum("status", ["Not Started", "In Progress", "Complete", "At Risk"]).default("Not Started").notNull(),
+  notes: text("notes"),
+  documentUrl: varchar("documentUrl", { length: 500 }),
+  documentName: varchar("documentName", { length: 255 }),
+  owner: varchar("owner", { length: 255 }),
+  dueDate: timestamp("dueDate"),
+  completedDate: timestamp("completedDate"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SubBox = typeof subBoxes.$inferSelect;
+export type InsertSubBox = typeof subBoxes.$inferInsert;
