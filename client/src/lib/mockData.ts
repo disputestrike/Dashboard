@@ -40,34 +40,20 @@ export interface GanttTask {
   status: 'Not Started' | 'In Progress' | 'Complete' | 'At Risk';
 }
 
-// 12 Institutions
+// 4 Cabinet Areas
 export const institutions: Institution[] = [
-  { id: 'MCC-KC-01', name: 'Penn Valley', category: 'Academic', owner: 'Dr. Sarah Johnson', status: 'Active' },
-  { id: 'MCC-KC-02', name: 'Blue River', category: 'Academic', owner: 'Dr. Michael Chen', status: 'Active' },
-  { id: 'MCC-KC-03', name: 'Longview', category: 'Academic', owner: 'Dr. Patricia Williams', status: 'Active' },
-  { id: 'MCC-KC-04', name: 'Maple Woods', category: 'Academic', owner: 'Dr. James Rodriguez', status: 'Active' },
-  { id: 'MCC-KC-05', name: 'Online', category: 'Academic', owner: 'Dr. Emily Martinez', status: 'Active' },
-  { id: 'MCC-KC-06', name: 'Business & Technology', category: 'Operations', owner: 'Mr. David Thompson', status: 'Active' },
-  { id: 'MCC-KC-07', name: 'Student Services Central', category: 'Student Services', owner: 'Ms. Lisa Anderson', status: 'Active' },
-  { id: 'MCC-KC-08', name: 'Administrative Services', category: 'Admin', owner: 'Mr. Robert Davis', status: 'Active' },
-  { id: 'MCC-KC-09', name: 'Financial Aid', category: 'Student Services', owner: 'Ms. Jennifer White', status: 'Active' },
-  { id: 'MCC-KC-10', name: 'Human Resources', category: 'Admin', owner: 'Ms. Karen Brown', status: 'Active' },
-  { id: 'MCC-KC-11', name: 'Information Technology', category: 'Operations', owner: 'Mr. Christopher Lee', status: 'Active' },
-  { id: 'MCC-KC-12', name: 'Facilities Management', category: 'Operations', owner: 'Mr. Anthony Garcia', status: 'Active' },
+  { id: 'CAB-01', name: 'MCC Online', category: 'Goal', owner: 'Dr. Thomas W. Meyer', status: 'Active' },
+  { id: 'CAB-02', name: 'IERT', category: 'Goal', owner: 'Dr. John M. Chawana', status: 'Active' },
+  { id: 'CAB-03', name: 'Instruction and Student Services', category: 'Goal', owner: 'Ms. Sue Gochis', status: 'Active' },
+  { id: 'CAB-04', name: 'Community Engagement', category: 'Goal', owner: 'Dr. Larry Rideaux Jr.', status: 'Active' },
 ];
 
-// 10 Variables
+// Goals (A, B, C, D)
 export const variables: Variable[] = [
-  { id: 'VAR-001', name: 'Enrollment Count', category: 'Academic', targetType: 'Maximize', greenThreshold: 0.95, yellowThreshold: 0.85 },
-  { id: 'VAR-002', name: 'Retention Rate', category: 'Academic', targetType: 'Maximize', greenThreshold: 0.9, yellowThreshold: 0.8 },
-  { id: 'VAR-003', name: 'Budget Variance', category: 'Financial', targetType: 'Maintain', greenThreshold: 0.05, yellowThreshold: 0.1 },
-  { id: 'VAR-004', name: 'Compliance Audit Score', category: 'Compliance', targetType: 'Maximize', greenThreshold: 1, yellowThreshold: 0.9 },
-  { id: 'VAR-005', name: 'Student Satisfaction', category: 'Student Services', targetType: 'Maximize', greenThreshold: 0.8, yellowThreshold: 0.7 },
-  { id: 'VAR-006', name: 'Faculty Load', category: 'Academic', targetType: 'Maintain', greenThreshold: 0.9, yellowThreshold: 0.8 },
-  { id: 'VAR-007', name: 'Grant Funding', category: 'Financial', targetType: 'Maximize', greenThreshold: 1, yellowThreshold: 0.8 },
-  { id: 'VAR-008', name: 'Facility Utilization', category: 'Operations', targetType: 'Maximize', greenThreshold: 0.75, yellowThreshold: 0.6 },
-  { id: 'VAR-009', name: 'IT Uptime', category: 'Operations', targetType: 'Maximize', greenThreshold: 0.99, yellowThreshold: 0.95 },
-  { id: 'VAR-010', name: 'Employee Turnover', category: 'Admin', targetType: 'Minimize', greenThreshold: 0.1, yellowThreshold: 0.2 },
+  { id: 'GOAL-A', name: 'Goal A', category: 'Students, Alumni & Community', targetType: 'Maximize', greenThreshold: 0.95, yellowThreshold: 0.85 },
+  { id: 'GOAL-B', name: 'Goal B', category: 'Organization', targetType: 'Maximize', greenThreshold: 0.9, yellowThreshold: 0.8 },
+  { id: 'GOAL-C', name: 'Goal C', category: 'Resource Management', targetType: 'Maintain', greenThreshold: 0.05, yellowThreshold: 0.1 },
+  { id: 'GOAL-D', name: 'Goal D', category: 'Employees', targetType: 'Maximize', greenThreshold: 1, yellowThreshold: 0.9 },
 ];
 
 // Generate performance data for 12 months
