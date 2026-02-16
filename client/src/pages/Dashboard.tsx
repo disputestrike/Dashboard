@@ -153,13 +153,13 @@ export default function Dashboard() {
         <div className="container py-4">
           <div className="flex flex-wrap gap-4 items-end">
             <div className="flex-1 min-w-[200px]">
-              <label className="text-sm font-medium text-foreground mb-2 block">Institution</label>
+              <label className="text-sm font-medium text-foreground mb-2 block">Cabinet Areas</label>
               <Select value={selectedInstitution} onValueChange={setSelectedInstitution}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Institutions</SelectItem>
+                  <SelectItem value="all">All Cabinet Areas</SelectItem>
                   {institutions.map((inst) => (
                     <SelectItem key={inst.id} value={inst.id}>
                       {inst.name}
@@ -170,19 +170,17 @@ export default function Dashboard() {
             </div>
 
             <div className="flex-1 min-w-[200px]">
-              <label className="text-sm font-medium text-foreground mb-2 block">Category</label>
+              <label className="text-sm font-medium text-foreground mb-2 block">Goals</label>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  <SelectItem value="Academic">Academic</SelectItem>
-                  <SelectItem value="Financial">Financial</SelectItem>
-                  <SelectItem value="Compliance">Compliance</SelectItem>
-                  <SelectItem value="Student Services">Student Services</SelectItem>
-                  <SelectItem value="Operations">Operations</SelectItem>
-                  <SelectItem value="Admin">Admin</SelectItem>
+                  <SelectItem value="all">All Goals</SelectItem>
+                  <SelectItem value="Students, Alumni & Community">Goal A: Students, Alumni & Community</SelectItem>
+                  <SelectItem value="Organization">Goal B: Organization</SelectItem>
+                  <SelectItem value="Resource Management">Goal C: Resource Management</SelectItem>
+                  <SelectItem value="Employees">Goal D: Employees</SelectItem>
                 </SelectContent>
               </Select>
             </div>

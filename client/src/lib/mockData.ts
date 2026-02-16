@@ -40,12 +40,19 @@ export interface GanttTask {
   status: 'Not Started' | 'In Progress' | 'Complete' | 'At Risk';
 }
 
-// 4 Cabinet Areas
+// 5 Physical Schools + 4 Cabinet Areas
 export const institutions: Institution[] = [
-  { id: 'CAB-01', name: 'MCC Online', category: 'Goal', owner: 'Dr. Thomas W. Meyer', status: 'Active' },
-  { id: 'CAB-02', name: 'IERT', category: 'Goal', owner: 'Dr. John M. Chawana', status: 'Active' },
-  { id: 'CAB-03', name: 'Instruction and Student Services', category: 'Goal', owner: 'Ms. Sue Gochis', status: 'Active' },
-  { id: 'CAB-04', name: 'Community Engagement', category: 'Goal', owner: 'Dr. Larry Rideaux Jr.', status: 'Active' },
+  // Physical Schools
+  { id: 'SCHOOL-01', name: 'Blue River', category: 'School', owner: 'Dr. Michael Chen', status: 'Active' },
+  { id: 'SCHOOL-02', name: 'Longview', category: 'School', owner: 'Dr. Patricia Williams', status: 'Active' },
+  { id: 'SCHOOL-03', name: 'Maple Woods', category: 'School', owner: 'Dr. James Rodriguez', status: 'Active' },
+  { id: 'SCHOOL-04', name: 'Penn Valley', category: 'School', owner: 'Dr. Sarah Johnson', status: 'Active' },
+  { id: 'SCHOOL-05', name: 'Online', category: 'School', owner: 'Dr. Emily Martinez', status: 'Active' },
+  // Cabinet Areas
+  { id: 'CAB-01', name: 'MCC Online', category: 'Cabinet', owner: 'Dr. Thomas W. Meyer', status: 'Active' },
+  { id: 'CAB-02', name: 'IERT', category: 'Cabinet', owner: 'Dr. John M. Chawana', status: 'Active' },
+  { id: 'CAB-03', name: 'Instruction and Student Services', category: 'Cabinet', owner: 'Ms. Sue Gochis', status: 'Active' },
+  { id: 'CAB-04', name: 'Community Engagement', category: 'Cabinet', owner: 'Dr. Larry Rideaux Jr.', status: 'Active' },
 ];
 
 // Goals (A, B, C, D)
