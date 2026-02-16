@@ -45,3 +45,6 @@
 
 ## UI Refinements
 - [x] Add subtle background shade/styling to Sign Out button for better visibility
+
+## Bug Fixes
+- [x] Fixed missing key prop error in InitiativesSection GOAL_TABS.map()

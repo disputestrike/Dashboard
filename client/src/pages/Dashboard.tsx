@@ -466,6 +466,7 @@ function InitiativesSection({ selectedGoal }: { selectedGoal: string }) {
           <div className="flex flex-wrap gap-2">
             {GOAL_TABS.map((tab) => (
               <button
+                key={tab.id}
                 onClick={() => setSelectedGoalTab(tab.id)}
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${
                   selectedGoalTab === tab.id
@@ -474,7 +475,8 @@ function InitiativesSection({ selectedGoal }: { selectedGoal: string }) {
                 }`}
               >
                 {tab.label}
-              </button>      ))}
+              </button>
+            ))}
           </div>
         </div>
 
