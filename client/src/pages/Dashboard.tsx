@@ -368,33 +368,334 @@ export default function Dashboard() {
           </Card>
         </div>
 
-        {/* Recent Tasks / Gantt Preview */}
+        {/* Active Institutional Initiatives */}
         <Card className="chart-container">
           <CardHeader>
             <CardTitle>Active Institutional Initiatives</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {ganttTasks.slice(0, 5).map((task) => (
-                <div key={task.id} className="border-b border-border pb-4 last:border-0">
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <h4 className="font-medium text-foreground">{task.name}</h4>
-                      <p className="text-sm text-muted-foreground">Assigned to: {task.assignedTo}</p>
+            <div className="space-y-8">
+              {/* Goal A */}
+              <div className="border-l-4 border-l-blue-600 pl-4">
+                <h3 className="text-lg font-bold text-[#003D7A] mb-4">Goal A: Students, Alumni & Community</h3>
+                <div className="space-y-4">
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Enhance MCC's brand using holistic student experiences as an expanded community asset</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
                     </div>
-                    <Badge variant={task.status === 'Complete' ? 'default' : task.status === 'At Risk' ? 'destructive' : 'secondary'}>{task.status}</Badge>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 bg-secondary rounded-full h-2">
-                      <div className="bg-primary h-2 rounded-full" style={{ width: `${task.percentComplete}%` }} />
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Establish a mindset for early career identification</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
                     </div>
-                    <span className="text-sm font-medium text-foreground">{task.percentComplete}%</span>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    {task.startDate} to {task.endDate}
-                  </p>
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Bridge community and alumni</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Expand high-impact practices to become a student-ready college</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-blue-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              ))}
+              </div>
+
+              {/* Goal B */}
+              <div className="border-l-4 border-l-green-600 pl-4">
+                <h3 className="text-lg font-bold text-[#003D7A] mb-4">Goal B: Organization</h3>
+                <div className="space-y-4">
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Build a world-class first impression experience</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Demonstrate student-focused decision making</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Implement a student-centered approach</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Provide high-quality programs & services</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-green-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Goal C */}
+              <div className="border-l-4 border-l-amber-600 pl-4">
+                <h3 className="text-lg font-bold text-[#003D7A] mb-4">Goal C: Resource Management</h3>
+                <div className="space-y-4">
+                  <div className="bg-amber-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Expand support for underrepresented populations</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-amber-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Remove barriers to access</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-amber-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Develop 21st Century technology infrastructure</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-amber-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Promote effective & efficient stewardship of resources</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-amber-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Goal D */}
+              <div className="border-l-4 border-l-purple-600 pl-4">
+                <h3 className="text-lg font-bold text-[#003D7A] mb-4">Goal D: Employees</h3>
+                <div className="space-y-4">
+                  <div className="bg-purple-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Become a destination workplace (IT)</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-purple-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-purple-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-purple-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-purple-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-purple-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#003D7A] mb-3">Emphasize employee development: personal & professional, with an emphasis on student success</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white border-2 border-purple-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 1</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-purple-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 2</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-purple-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 3</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                      <div className="bg-white border-2 border-purple-200 rounded p-3 text-center">
+                        <div className="text-xs font-medium text-[#003D7A]">Sub-box 4</div>
+                        <div className="text-2xl font-bold text-[#F4B024] mt-1">—</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
