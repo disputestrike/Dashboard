@@ -133,7 +133,7 @@ export default function Dashboard() {
               await logoutMutation.mutateAsync();
               setLocation('/');
             }}
-            className="text-white hover:bg-white/20"
+            className="text-white hover:bg-white/20 border-2 border-white rounded-lg px-4 py-2"
           >
             Sign Out
           </Button>
@@ -259,14 +259,14 @@ export default function Dashboard() {
           </Card>
         </div>
 
-        {/* Charts Row 1 */}
+        {/* Charts Row 1 - Side by Side */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <Card className="chart-container">
             <CardHeader>
               <CardTitle>Overall Status Distribution</CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={250}>
+              <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie data={statusDistribution} cx="50%" cy="50%" labelLine={false} label={({ name, value }) => `${name}: ${value}`} outerRadius={80} fill="#8884d8" dataKey="value">
                     {statusDistribution.map((entry, index) => (
@@ -279,7 +279,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card className="chart-container lg:col-span-2">
+          <Card className="chart-container">
             <CardHeader>
               <CardTitle>Performance Trend (12 Months)</CardTitle>
             </CardHeader>
@@ -303,13 +303,13 @@ export default function Dashboard() {
           {/* Institution Health */}
           <Card className="chart-container">
             <CardHeader>
-              <CardTitle>Institution Health Status</CardTitle>
+              <CardTitle>Cabinet Area Health Status</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={350}>
                 <BarChart data={institutionHealthData.slice(0, 6)}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
+                  <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} interval={0} />
                   <YAxis />
                   <Tooltip />
                   <Legend />
@@ -324,13 +324,13 @@ export default function Dashboard() {
           {/* Category Performance */}
           <Card className="chart-container">
             <CardHeader>
-              <CardTitle>Performance by Category</CardTitle>
+              <CardTitle>Performance by Goal</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={350}>
                 <BarChart data={categoryHealthData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
+                  <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} interval={0} />
                   <YAxis />
                   <Tooltip />
                   <Legend />
