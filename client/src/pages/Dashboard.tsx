@@ -170,10 +170,10 @@ export default function Dashboard() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Goals</SelectItem>
-                    <SelectItem value="A">Goal A</SelectItem>
-                    <SelectItem value="B">Goal B</SelectItem>
-                    <SelectItem value="C">Goal C</SelectItem>
-                    <SelectItem value="D">Goal D</SelectItem>
+                    <SelectItem value="A">Goal A: Students, Alumni & Community</SelectItem>
+                    <SelectItem value="B">Goal B: Organization</SelectItem>
+                    <SelectItem value="C">Goal C: Resource Management</SelectItem>
+                    <SelectItem value="D">Goal D: Employees</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -224,67 +224,49 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <div className="container py-8">
-        {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card className="kpi-card border-l-4 border-l-green-600 bg-gradient-to-br from-green-50 to-white">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-[#003D7A]">Healthy Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold text-green-600">{health.healthPercentage}%</span>
-                <TrendingUp className="w-4 h-4 text-green-600" />
-              </div>
-              <p className="text-xs text-[#003D7A] mt-2">{health.green} of {health.total} metrics</p>
+        {/* Health Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <Card className="border-l-4 border-l-green-500">
+            <CardContent className="pt-6">
+              <div className="text-sm font-medium text-gray-600">Healthy Status</div>
+              <div className="text-3xl font-bold text-green-600 mt-2">{health.green}%</div>
+              <div className="text-xs text-gray-500 mt-1">{health.green} of 432 metrics</div>
             </CardContent>
           </Card>
 
-          <Card className="kpi-card border-l-4 border-l-green-600 bg-gradient-to-br from-green-50 to-white">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-[#003D7A]">Green Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-green-600">{health.green}</div>
-              <p className="text-xs text-[#003D7A] mt-2">Performing as expected</p>
+          <Card className="border-l-4 border-l-green-600">
+            <CardContent className="pt-6">
+              <div className="text-sm font-medium text-gray-600">Green Status</div>
+              <div className="text-3xl font-bold text-green-600 mt-2">{health.green}</div>
+              <div className="text-xs text-gray-500 mt-1">Performing as expected</div>
             </CardContent>
           </Card>
 
-          <Card className="kpi-card border-l-4 border-l-amber-600 bg-gradient-to-br from-amber-50 to-white">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-[#003D7A]">Yellow Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold text-amber-600">{health.yellow}</span>
-                <Clock className="w-4 h-4 text-amber-600" />
-              </div>
-              <p className="text-xs text-[#003D7A] mt-2">Needs attention</p>
+          <Card className="border-l-4 border-l-yellow-500">
+            <CardContent className="pt-6">
+              <div className="text-sm font-medium text-gray-600">Yellow Status</div>
+              <div className="text-3xl font-bold text-yellow-600 mt-2">{health.yellow}</div>
+              <div className="text-xs text-gray-500 mt-1">Needs attention</div>
             </CardContent>
           </Card>
 
-          <Card className="kpi-card border-l-4 border-l-red-600 bg-gradient-to-br from-red-50 to-white">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-[#003D7A]">Red Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold text-red-600">{health.red}</span>
-                <AlertCircle className="w-4 h-4 text-red-600" />
-              </div>
-              <p className="text-xs text-[#003D7A] mt-2">Critical attention required</p>
+          <Card className="border-l-4 border-l-red-500">
+            <CardContent className="pt-6">
+              <div className="text-sm font-medium text-gray-600">Red Status</div>
+              <div className="text-3xl font-bold text-red-600 mt-2">{health.red}</div>
+              <div className="text-xs text-gray-500 mt-1">Critical attention required</div>
             </CardContent>
           </Card>
         </div>
 
         {/* Charts Row 1 */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          {/* Status Distribution */}
-          <Card className="chart-container border-t-4 border-t-[#003D7A]">
-            <CardHeader className="bg-gradient-to-r from-[#003D7A]/5 to-[#F4B024]/5">
-              <CardTitle className="text-[#003D7A]">Overall Status Distribution</CardTitle>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <Card className="chart-container">
+            <CardHeader>
+              <CardTitle>Overall Status Distribution</CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
                   <Pie data={statusDistribution} cx="50%" cy="50%" labelLine={false} label={({ name, value }) => `${name}: ${value}`} outerRadius={80} fill="#8884d8" dataKey="value">
                     {statusDistribution.map((entry, index) => (
@@ -297,7 +279,6 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Trend Over Time */}
           <Card className="chart-container lg:col-span-2">
             <CardHeader>
               <CardTitle>Performance Trend (12 Months)</CardTitle>
@@ -393,6 +374,15 @@ function InitiativesSection({ selectedGoal }: { selectedGoal: string }) {
   const createInitiativeMutation = trpc.initiatives.create.useMutation();
   
   const initiatives = initiativesQuery.data || [];
+
+  // Sync with the Goals dropdown filter from parent component
+  useEffect(() => {
+    if (selectedGoal && selectedGoal !== 'all') {
+      setSelectedGoalTab(selectedGoal);
+    } else if (selectedGoal === 'all') {
+      setSelectedGoalTab('all');
+    }
+  }, [selectedGoal]);
 
   const goalInitiatives = selectedGoalTab === 'all' 
     ? initiatives 
@@ -601,18 +591,23 @@ function InitiativesSection({ selectedGoal }: { selectedGoal: string }) {
         </CardContent>
       </Card>
 
-      <SubBoxEditModal
-        isOpen={showModal}
-        onClose={() => {
-          setShowModal(false);
-          setEditingSubBox(null);
-        }}
-        subBox={editingSubBox}
-        initiativeId={editingSubBox?.initiativeId || 0}
-        onSuccess={() => {
-          initiativesQuery.refetch();
-        }}
-      />
+      {/* Sub-box Edit Modal */}
+      {showModal && editingSubBox && (
+        <SubBoxEditModal
+          isOpen={showModal}
+          subBox={editingSubBox}
+          initiativeId={editingSubBox.initiativeId}
+          onClose={() => {
+            setShowModal(false);
+            setEditingSubBox(null);
+          }}
+          onSuccess={() => {
+            initiativesQuery.refetch();
+            setShowModal(false);
+            setEditingSubBox(null);
+          }}
+        />
+      )}
     </>
   );
 }

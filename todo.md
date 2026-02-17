@@ -48,3 +48,10 @@
 
 ## Bug Fixes
 - [x] Fixed missing key prop error in InitiativesSection GOAL_TABS.map()
+
+## Full Goal Names & App Integration
+- [x] Update Goals dropdown to show full goal names (not just A, B, C, D)
+- [x] Update tab labels in InitiativesSection to show full goal names
+- [x] Ensure Goals filter in top section connects to InitiativesSection
+- [x] Verify all data flows are connected between components
+- [x] Test full integration across all dashboard sections
