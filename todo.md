@@ -65,3 +65,11 @@
 - [x] Fix overlapping names in histograms - rotate/center-align labels for readability
 - [x] Remove all placeholder/fake data from dashboard
 - [x] Connect all data sources to real institutional information
+
+
+## URGENT - Railway Deployment Fix
+- [ ] Restore all schools/campuses (Blue River, Longview, Maple Woods, Penn Valley, Online) to institutions data
+- [ ] Add Cabinet Area hierarchy - each school belongs to a Cabinet Area
+- [ ] Fix asset path issue causing "Invalid URL" error on Railway
+- [ ] Push corrected code to GitHub
+- [ ] Verify Railway deployment works
