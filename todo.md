@@ -68,8 +68,14 @@
 
 
 ## URGENT - Railway Deployment Fix
-- [ ] Restore all schools/campuses (Blue River, Longview, Maple Woods, Penn Valley, Online) to institutions data
-- [ ] Add Cabinet Area hierarchy - each school belongs to a Cabinet Area
-- [ ] Fix asset path issue causing "Invalid URL" error on Railway
-- [ ] Push corrected code to GitHub
+- [x] Restore all schools/campuses (Blue River, Longview, Maple Woods, Penn Valley, Online) to institutions data
+- [x] Add Cabinet Area hierarchy - each school belongs to a Cabinet Area
+- [x] Fix asset path issue causing "Invalid URL" error on Railway
+- [x] Push corrected code to GitHub
 - [ ] Verify Railway deployment works
+
+## Cabinet Area Names Update
+- [ ] Update Cabinet Areas with correct institutional names
+- [ ] Assign leaders to each Cabinet Area
+- [ ] Update all dashboard filters and displays
+- [ ] Push to GitHub and deploy to Railway

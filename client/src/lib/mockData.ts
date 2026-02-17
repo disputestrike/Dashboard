@@ -1,19 +1,19 @@
 import { type PerformanceData, type Institution, type PerformanceVariable, type GanttTask } from '@shared/types';
 
-// Cabinet Areas and Schools/Campuses
+// Cabinet Areas (Correct institutional names)
 export const institutions: Institution[] = [
   // Cabinet Areas
-  { id: 1, institutionId: 'CAB-01', name: 'MCC Online', category: 'Cabinet', owner: 'Dr. Thomas W. Meyer', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
-  { id: 2, institutionId: 'CAB-02', name: 'IERT', category: 'Cabinet', owner: 'Dr. John M. Chawana', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
+  { id: 1, institutionId: 'CAB-01', name: 'Community and College Relations', category: 'Cabinet', owner: 'Dr. Larry Rideaux Jr.', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
+  { id: 2, institutionId: 'CAB-02', name: 'Administrative Services', category: 'Cabinet', owner: 'Dr. John M. Chawana', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
   { id: 3, institutionId: 'CAB-03', name: 'Instruction and Student Services', category: 'Cabinet', owner: 'Ms. Sue Gochis', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
-  { id: 4, institutionId: 'CAB-04', name: 'Community Engagement', category: 'Cabinet', owner: 'Dr. Larry Rideaux Jr.', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
+  { id: 4, institutionId: 'CAB-04', name: 'IERT', category: 'Cabinet', owner: 'Dr. John M. Chawana', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
+  { id: 5, institutionId: 'CAB-05', name: 'MCC Online', category: 'Cabinet', owner: 'Dr. Thomas W. Meyer', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
   
-  // Schools/Campuses
-  { id: 5, institutionId: 'SCH-01', name: 'Blue River', category: 'School', owner: 'Campus Director', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
-  { id: 6, institutionId: 'SCH-02', name: 'Longview', category: 'School', owner: 'Campus Director', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
-  { id: 7, institutionId: 'SCH-03', name: 'Maple Woods', category: 'School', owner: 'Campus Director', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
-  { id: 8, institutionId: 'SCH-04', name: 'Penn Valley', category: 'School', owner: 'Campus Director', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
-  { id: 9, institutionId: 'SCH-05', name: 'Online', category: 'School', owner: 'Dr. Thomas W. Meyer', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
+  // Campuses
+  { id: 6, institutionId: 'SCH-01', name: 'Blue River Campus', category: 'Campus', owner: 'Campus Director', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
+  { id: 7, institutionId: 'SCH-02', name: 'Longview Campus', category: 'Campus', owner: 'Campus Director', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
+  { id: 8, institutionId: 'SCH-03', name: 'Maple Woods Campus', category: 'Campus', owner: 'Campus Director', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
+  { id: 9, institutionId: 'SCH-04', name: 'Penn Valley Campus', category: 'Campus', owner: 'Campus Director', status: 'Active', createdAt: new Date(), updatedAt: new Date() },
 ];
 
 // Goals (A, B, C, D)
@@ -72,7 +72,7 @@ export const ganttTasks: GanttTask[] = [
   {
     id: 'INIT-002',
     name: 'Goal B: Student-Centered Decision Making',
-    assignedTo: 'Dr. John M. Chawana (IERT)',
+    assignedTo: 'Dr. John M. Chawana (Administrative Services)',
     startDate: '2026-02-01',
     endDate: '2026-08-31',
     percentComplete: 55,
@@ -94,7 +94,7 @@ export const ganttTasks: GanttTask[] = [
   {
     id: 'INIT-004',
     name: 'Goal D: Destination Workplace Initiative',
-    assignedTo: 'Dr. Larry Rideaux Jr. (Community Engagement)',
+    assignedTo: 'Dr. Larry Rideaux Jr. (Community and College Relations)',
     startDate: '2026-03-01',
     endDate: '2026-12-31',
     percentComplete: 35,
@@ -116,7 +116,7 @@ export const ganttTasks: GanttTask[] = [
   {
     id: 'INIT-006',
     name: 'Cabinet Area Alignment & Collaboration',
-    assignedTo: 'Dr. John M. Chawana (IERT)',
+    assignedTo: 'Dr. John M. Chawana (Administrative Services)',
     startDate: '2026-01-01',
     endDate: '2026-12-31',
     percentComplete: 60,
